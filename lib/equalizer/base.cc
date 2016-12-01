@@ -18,6 +18,7 @@
 #include "base.h"
 #include <cstring>
 #include <iostream>
+#include <fstream>
 
 using namespace gr::ieee802_11::equalizer;
 
@@ -40,3 +41,32 @@ const gr_complex base::POLARITY[127] = {
 	-1, 1,-1,-1, 1,-1, 1, 1, 1, 1,-1, 1,-1, 1,-1, 1,
 	-1,-1,-1,-1,-1, 1,-1, 1, 1,-1, 1,-1, 1, 1, 1,-1,
 	-1, 1,-1,-1,-1, 1, 1, 1,-1,-1,-1,-1,-1,-1,-1 };
+
+base::base() {
+
+	const char *homedir;
+	std::ofstream logfile;
+
+	/* Initializatize CSI Logging */
+	start_time = std::chrono::high_resolution_clock::now();
+
+	// Place logfile in user's home directory
+	if ((homedir = std::getenv("HOME")) == NULL) {
+		logfilename = "";
+	} else {
+		std::string s(homedir);
+		logfilename = s;
+
+#ifdef _WIN32
+		logfilename.append("\\");
+#else
+		logfilename.append("/");
+#endif
+		logfilename.append("csi.log");
+
+	// Add start tag to log file
+		logfile.open(logfilename.c_str());
+		logfile << "LOGGING START\n";
+		logfile.close();
+	}
+}

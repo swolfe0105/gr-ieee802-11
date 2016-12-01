@@ -20,6 +20,8 @@
 
 #include <gnuradio/gr_complex.h>
 #include <gnuradio/digital/constellation.h>
+#include <uhd/usrp/multi_usrp.hpp>
+#include <chrono>
 
 namespace gr {
 namespace ieee802_11 {
@@ -27,6 +29,7 @@ namespace equalizer {
 
 class base {
 public:
+	base();
 	virtual ~base() {};
 	virtual void equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boost::shared_ptr<gr::digital::constellation> mod) = 0;
 	virtual double get_snr() = 0;
@@ -35,6 +38,9 @@ public:
 
 protected:
 	static const gr_complex LONG[64];
+	std::chrono::high_resolution_clock::time_point start_time;
+
+	std::string logfilename;
 };
 
 } /* namespace channel_estimation */

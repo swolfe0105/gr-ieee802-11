@@ -18,6 +18,13 @@
 #include "ls.h"
 #include <cstring>
 #include <iostream>
+#include <fstream>
+#include <ctime>
+#include <ratio>
+#include <unistd.h>
+#include <sys/types.h>
+#include <pwd.h>
+
 
 using namespace gr::ieee802_11::equalizer;
 
@@ -41,6 +48,8 @@ void ls::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boo
 			d_H[i] /= LONG[i] * gr_complex(2, 0);
 		}
 
+		log_csi();
+
 	} else {
 
 		int c = 0;
@@ -58,4 +67,36 @@ void ls::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boo
 
 double ls::get_snr() {
 	return d_snr;
+}
+
+void ls::log_csi() {
+    std::ofstream logfile;
+
+	// open log file
+	logfile.open(logfilename, std::ios::app | std::ios::ate | std::ios::out);
+	if (!logfile.is_open()) {
+		std::cout << "unable to open file";
+	};
+
+	// timestamp
+	std::chrono::high_resolution_clock::time_point end_time
+                             = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> timespan = std::chrono::duration_cast<std::chrono::duration<double>>(end_time - start_time);
+	logfile << timespan.count();
+
+	// SNR
+	logfile << "," << get_snr();
+
+	// CSI
+	for(int i = 0; i < 64; i++) {
+		if( (i == 11) || (i == 25) || (i == 32) || (i == 39) ||
+            (i == 53) || (i < 6) || ( i > 58)) {
+			continue;
+		} else {
+			logfile << "," << d_H[i].real() << "," << d_H[i].imag();
+		}
+	}
+
+	logfile << "\n";
+	logfile.close();
 }

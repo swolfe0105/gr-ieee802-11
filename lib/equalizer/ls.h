@@ -32,6 +32,7 @@ public:
 private:
 	gr_complex d_H[64];
 	double d_snr;
+	void log_csi();
 };
 
 } /* namespace channel_estimation */
