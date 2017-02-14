@@ -9,6 +9,7 @@
 	<callback>set_algorithm($algo)</callback>
 	<callback>set_frequency($freq)</callback>
 	<callback>set_bandwidth($bw)</callback>
+	<callback>get_eq_snr()</callback>
 
 	<param>
 		<name>Algorithm</name>

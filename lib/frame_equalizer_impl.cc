@@ -58,6 +58,10 @@ frame_equalizer_impl::frame_equalizer_impl(Equalizer algo, double freq, double b
 frame_equalizer_impl::~frame_equalizer_impl() {
 }
 
+double
+frame_equalizer_impl::get_eq_snr(void) {
+	return d_equalizer->get_snr();
+}
 
 void
 frame_equalizer_impl::set_algorithm(Equalizer algo) {

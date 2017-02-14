@@ -36,6 +36,7 @@ public:
 	void set_algorithm(Equalizer algo);
 	void set_bandwidth(double bw);
 	void set_frequency(double freq);
+	double get_eq_snr(void);
 
 	void forecast (int noutput_items, gr_vector_int &ninput_items_required);
 	int general_work(int noutput_items,

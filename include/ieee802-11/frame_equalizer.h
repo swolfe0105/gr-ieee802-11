@@ -43,6 +43,7 @@ public:
 	virtual void set_algorithm(Equalizer algo) = 0;
 	virtual void set_bandwidth(double bw) = 0;
 	virtual void set_frequency(double freq) = 0;
+	virtual double get_eq_snr(void) = 0;
 };
 
 } // namespace ieee802_11
